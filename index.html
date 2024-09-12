@@ -1,1 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12-Week DSA Schedule</title>
+    <style>
+        :root {
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #bb86fc;
+            --secondary-color: #03dac6;
+            --text-color: #e0e0e0;
+            --text-color-secondary: #b0b0b0;
+        }
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .header {
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .tab-bar {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .tab {
+            background-color: transparent;
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab.active {
+            background-color: var(--primary-color);
+            color: #000;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            background-color: var(--primary-color);
+            color: #000;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--surface-color);
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            z-index: 1;
+            border-radius: 5px;
+        }
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        .dropdown-content a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropbtn {
+            background-color: #cf9ffd;
+            box-shadow: 0 2px 8px rgba(187,134,252,0.3);
+        }
+        .content {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .problem {
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .problem:hover {
+            background-color: rgba(255,255,255,0.08);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .checkbox {
+            margin-right: 10px;
+            accent-color: var(--secondary-color);
+        }
+        #timer {
+            font-size: 2.5em;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: var(--surface-color);
+            color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border: 1px solid var(--secondary-color);
+        }
+        .hidden {
+            display: none;
+        }
+        #notesContent textarea {
+            width: 100%;
+            height: 200px;
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--text-color-secondary);
+            border-radius: 5px;
+            padding: 10px;
+            font-family: inherit;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>12-Week DSA Schedule</h1>
+        <div class="tab-bar">
+            <button class="tab active" onclick="showContent('schedule')">Schedule</button>
+            <button class="tab" onclick="showContent('notes')">Notes</button>
+        </div>
+    </div>
+    
+    <div class="content" id="scheduleContent">
+        <div class="dropdown">
+            <button class="dropbtn">Select Week</button>
+            <div class="dropdown-content" id="weekDropdown">
+                <!-- Week options will be added here by JavaScript -->
+            </div>
+        </div>
+        <h2>Week 1 - Part 1: Searching</h2>
+        <div id="timer"></div>
+        <div id="problemList">
+            <!-- Problems will be added here by JavaScript -->
+        </div>
+    </div>
 
+    <div class="content hidden" id="notesContent">
+        <h2>Notes</h2>
+        <select id="topicSelect">
+            <option value="arrays">Arrays</option>
+            <option value="linkedLists">Linked Lists</option>
+            <option value="trees">Trees</option>
+            <option value="graphs">Graphs</option>
+            <option value="dp">Dynamic Programming</option>
+        </select>
+        <textarea id="notesArea" placeholder="Enter your notes here..."></textarea>
+    </div>
+
+    <script>
+        // Populate dropdown with weeks
+        const dropdown = document.getElementById('weekDropdown');
+        for (let i = 1; i <= 12; i++) {
+            const a = document.createElement('a');
+            a.href = '#';
+            a.textContent = `Week ${i}`;
+            a.onclick = () => alert(`Week ${i} content will be displayed here.`);
+            dropdown.appendChild(a);
+        }
+
+        // Problems for Week 1, Part 1
+        const problems = [
+            "Search an Element in an array",
+            "Searching an element in a sorted array",
+            "Count 1's in binary array",
+            "Square root of a number",
+            "Majority Element",
+            "Left Index",
+            "Peak element",
+            "Floor in a Sorted Array",
+            "Minimum Number in a sorted rotated array",
+            "Two Repeated Elements",
+            "Roof Top",
+            "Maximum Water Between Two Buildings",
+            "Smallest Positive missing number",
+            "Count only Repeated",
+            "Count More than n-k Occurences",
+            "Allocate minimum number of pages",
+            "Subarray with given sum",
+            "Median of Two sorted arrays"
+        ];
+
+        // Add problems to the page
+        const problemList = document.getElementById('problemList');
+        problems.forEach((problem, index) => {
+            const div = document.createElement('div');
+            div.className = 'problem';
+            div.innerHTML = `
+                <input type="checkbox" id="problem${index}" class="checkbox">
+                <label for="problem${index}">${problem}</label>
+            `;
+            problemList.appendChild(div);
+        });
+
+        // Set up countdown timer
+        const timerElement = document.getElementById('timer');
+        const targetDate = new Date('2024-09-18T23:59:59').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timerElement.innerHTML = `
+                ${days.toString().padStart(2, '0')}d :
+                ${hours.toString().padStart(2, '0')}h :
+                ${minutes.toString().padStart(2, '0')}m :
+                ${seconds.toString().padStart(2, '0')}s
+            `;
+
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                timerElement.textContent = "EXPIRED";
+            }
+        }
+
+        updateCountdown();
+        const countdownTimer = setInterval(updateCountdown, 1000);
+
+        // Tab switching functionality
+        function showContent(contentType) {
+            document.getElementById('scheduleContent').classList.toggle('hidden', contentType !== 'schedule');
+            document.getElementById('notesContent').classList.toggle('hidden', contentType !== 'notes');
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent.toLowerCase() === contentType);
+            });
+        }
+
+        // Notes functionality
+        const topicSelect = document.getElementById('topicSelect');
+        const notesArea = document.getElementById('notesArea');
+        const notes = {};
+
+        topicSelect.addEventListener('change', () => {
+            const currentTopic = topicSelect.value;
+            notesArea.value = notes[currentTopic] || '';
+        });
+
+        notesArea.addEventListener('input', () => {
+            const currentTopic = topicSelect.value;
+            notes[currentTopic] = notesArea.value;
+        });
+    </script>
+</body>
+</html>
